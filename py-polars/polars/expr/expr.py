@@ -5467,6 +5467,9 @@ class Expr:
         ----------
         signed
             If True, reinterpret as `pl.Int64`. Otherwise, reinterpret as `pl.UInt64`.
+        int
+            If True, reinterpret as integer with same bit width. Otherwise, reinterpret as float
+            with same bit width.
 
         Examples
         --------
