@@ -6102,7 +6102,7 @@ class Series:
         ]
         """
 
-    def reinterpret(self, *, signed: bool = True) -> Series:
+    def reinterpret(self, *, signed: bool = True, int: bool = True) -> Series:
         """
         Reinterpret the underlying bits as a signed/unsigned integer.
 

@@ -688,8 +688,8 @@ impl PyExpr {
         self.inner.clone().dot(other.inner).into()
     }
 
-    fn reinterpret(&self, signed: bool) -> Self {
-        let function = move |s: Series| reinterpret(&s, signed).map(Some);
+    fn reinterpret(&self, signed: bool, int: bool) -> Self {
+        let function = move |s: Series| reinterpret(&s, signed, int).map(Some);
         let dt = if signed {
             DataType::Int64
         } else {
