@@ -1,7 +1,7 @@
 use polars::prelude::*;
 
-pub fn reinterpret(s: &Series, signed: bool) -> PolarsResult<Series> {
-    Ok(match (s.dtype(), signed) {
+pub fn reinterpret(s: &Series, signed: bool, int: bool) -> PolarsResult<Series> {
+    let reinterpret_signed = match (s.dtype(), signed) {
         (DataType::UInt64, true) => s.u64().unwrap().reinterpret_signed().into_series(),
         (DataType::UInt64, false) => s.clone(),
         (DataType::Int64, false) => s.i64().unwrap().reinterpret_unsigned().into_series(),
@@ -14,7 +14,40 @@ pub fn reinterpret(s: &Series, signed: bool) -> PolarsResult<Series> {
             ComputeError:
             "reinterpret is only allowed for 64-bit/32-bit integers types, use cast otherwise"
         ),
-    })
+    };
+
+    let result = match (reinterpret_signed.dtype(), int) {
+        (DataType::UInt64, true) => reinterpret_signed,
+        (DataType::UInt64, false) => reinterpret_signed
+            .u64()
+            .unwrap()
+            .reinterpret_float()
+            .into_series(),
+        (DataType::Int64, true) => reinterpret_signed,
+        (DataType::Int64, false) => reinterpret_signed
+            .i64()
+            .unwrap()
+            .reinterpret_float()
+            .into_series(),
+        (DataType::UInt32, true) => reinterpret_signed,
+        (DataType::UInt32, false) => reinterpret_signed
+            .u32()
+            .unwrap()
+            .reinterpret_float()
+            .into_series(),
+        (DataType::Int32, true) => reinterpret_signed,
+        (DataType::Int32, false) => reinterpret_signed
+            .i32()
+            .unwrap()
+            .reinterpret_float()
+            .into_series(),
+
+        _ => polars_bail!(
+            ComputeError:
+            "reinterpret is only allowed for 64-bit/32-bit integers types, use cast otherwise"
+        ),
+    };
+    Ok(result)
 }
 
 // was redefined because I could not get feature flags activated?

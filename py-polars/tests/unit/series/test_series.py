@@ -1253,6 +1253,13 @@ def test_reinterpret() -> None:
     assert df.select([pl.col("a").reinterpret(signed=True)])["a"].dtype == pl.Int64
 
 
+def test_reinterpret_float() -> None:
+    s = pl.Series("a", [1, 1, 2], dtype=pl.Int64)
+    assert s.reinterpret(int=False).dtype == pl.Float64
+    df = pl.DataFrame([s])
+    assert df.select([pl.col("a").reinterpret(int=False)])["a"].dtype == pl.Float64
+
+
 def test_mode() -> None:
     s = pl.Series("a", [1, 1, 2])
     assert s.mode().to_list() == [1]

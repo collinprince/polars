@@ -5456,7 +5456,7 @@ class Expr:
         k3 = seed_3 if seed_3 is not None else seed
         return self._from_pyexpr(self._pyexpr.hash(k0, k1, k2, k3))
 
-    def reinterpret(self, *, signed: bool = True) -> Self:
+    def reinterpret(self, *, signed: bool = True, int: bool = True) -> Self:
         """
         Reinterpret the underlying bits as a signed/unsigned integer.
 
@@ -5467,6 +5467,9 @@ class Expr:
         ----------
         signed
             If True, reinterpret as `pl.Int64`. Otherwise, reinterpret as `pl.UInt64`.
+        int
+            If True, reinterpret as integer with same bit width. Otherwise, reinterpret
+            as float with same bit width.
 
         Examples
         --------
@@ -5489,7 +5492,7 @@ class Expr:
         │ 2             ┆ 2        │
         └───────────────┴──────────┘
         """
-        return self._from_pyexpr(self._pyexpr.reinterpret(signed))
+        return self._from_pyexpr(self._pyexpr.reinterpret(signed, int))
 
     def inspect(self, fmt: str = "{}") -> Self:
         """

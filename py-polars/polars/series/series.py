@@ -6102,7 +6102,7 @@ class Series:
         ]
         """
 
-    def reinterpret(self, *, signed: bool = True) -> Series:
+    def reinterpret(self, *, signed: bool = True, int: bool = True) -> Series:
         """
         Reinterpret the underlying bits as a signed/unsigned integer.
 
@@ -6113,6 +6113,10 @@ class Series:
         ----------
         signed
             If True, reinterpret as `pl.Int64`. Otherwise, reinterpret as `pl.UInt64`.
+        int
+            If True, reinterpret as integer with same bit width. Otherwise, reinterpret
+            as float with same bit width.
+
         """
 
     def interpolate(self, method: InterpolationMethod = "linear") -> Series:

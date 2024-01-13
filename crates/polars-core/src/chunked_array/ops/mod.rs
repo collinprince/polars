@@ -65,6 +65,16 @@ pub trait Reinterpret {
     }
 }
 
+pub trait ReinterpretDType {
+    fn reinterpret_int(&self) -> Series {
+        unimplemented!()
+    }
+
+    fn reinterpret_float(&self) -> Series {
+        unimplemented!()
+    }
+}
+
 /// Transmute [`ChunkedArray`] to bit representation.
 /// This is useful in hashing context and reduces no.
 /// of compiled code paths.
